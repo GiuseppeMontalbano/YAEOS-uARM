@@ -1,12 +1,18 @@
-#include <uARMconst.h>
-#include <uARMtypes.h>
-#include <libuarm.h>
+#ifndef ASL_H
+#define ASL_H
+
+#include "uARMconst.h"
+#include "uARMtypes.h"
+#include "libuarm.h"
+
+#include "pcb.h"
 #include "const.h"
+
 
 typedef struct semd_t {
    struct semd_t *s_next;
    int *s_key;
-   struct pcb_t *s_procQ;
+   pcb_t *s_procQ;
 } semd_t;
 
 semd_t *semdfree_h, semd_table[MAXSEMD], *semdhash[ASHDSIZE];
@@ -17,3 +23,5 @@ pcb_t *removeBlocked(int *key);
 void forallBlocked(int *key, void fun(pcb_t *pcb, void *),void *arg);
 void outChildBlocked(pcb_t *p);
 void initASL();
+
+#endif //ASL_H
