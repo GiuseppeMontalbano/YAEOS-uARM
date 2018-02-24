@@ -1,5 +1,24 @@
-Francesco Ballestrazzi
-Active Semaphore Hash Table (ASHT)
+Suddivisione parti progetto:
+Federico De Giorgio -
+Valerio Leuzzi -
+Giuseppe Montalbano -
+Francesco Ballestrazzi - Active Semaphore Hash Table (ASHT)
+
+DOCUMENTAZIONE E SCELTE PROGETTUALI:
+///////
+parte fede
+////
+parte lerio
+/////
+parte beppe
+
+
+
+
+
+
+
+--ASHT--
 
 FUNZIONI AUSILIARIE
 Le funzioni richieste per la gestione della ASHT sono state per la maggior parte realizzate tramite funzioni ausiliarie ricorsive, evitando così l'utilizzo sistematico di variabili globali.
