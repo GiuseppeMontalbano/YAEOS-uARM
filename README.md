@@ -9,13 +9,13 @@ Il gestore delle code implementa quattro funzionalità  relative ai PCB:
 La piattaforma su cui verrà eseguito il codice è uARM (https://github.com/mellotanica/uARM).
 ### Compilazione
 Per compilare eseguire i seguenti comandi nella directory in cui è presente l'archivio tar "lso2018az01.tar.gz":
-
+```
 $> mkdir lso2018az01
 $> cd lso2018az01
 $> mv ../lso2018az01.tar.gz .
 $> tar -xzvf lso2018az01.tar.gz
 $> make
-
+```
 L'eseguibile creato è utilizzabile nella piattaforma selezionandolo nella sezione
 *Machine Config -> General -> Firmware & Software -> Core File*
 
