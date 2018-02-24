@@ -28,4 +28,4 @@ Gli output sono visibili nel _terminal 0_.
 Il file di test è puramente funzionale. Verifica la correttezza del codice, quindi non è necessario fare il cross-compiling.
 
 ### Documentazione
-Nella cartella "lso2018az01" sarà inoltre presente il file "documentazione.txt" contenente le principali scelte progettuali di ogni parte del progetto.
+Nella cartella "lso2018az01" è presente il file "documentazione.txt", contenente le principali scelte progettuali di ogni parte del progetto.
