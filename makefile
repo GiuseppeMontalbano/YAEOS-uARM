@@ -45,4 +45,4 @@ dir:
 	rmdir dist/
 
 tar:
-	tar czvf lso2018az01.tgz *
+	tar -czvf lso2018az01.tar.gz *
