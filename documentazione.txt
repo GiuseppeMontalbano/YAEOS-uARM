@@ -1,0 +1,29 @@
+Francesco Ballestrazzi
+Active Semaphore Hash Table (ASHT)
+
+FUNZIONI AUSILIARIE
+Le funzioni richieste per la gestione della ASHT sono state per la maggior parte realizzate tramite funzioni ausiliarie ricorsive, evitando così l'utilizzo sistematico di variabili globali.
+
+Per semplificare la gestione delle operazioni sulla ASHT sono state implementate 3 funzioni esterne: 
+ -cercaInListaDiTrabocco: per la ricerca di semd con una determinata key nella ASHT;
+ -insertInListaDiTrabocco: per l'inserimento in una delle liste di trabocco della ASHT;
+ -removeDaTrabocco: per la rimozione di un semd dalla lista di trabocco a cui appartiene;
+
+
+FUNZIONE HASH
+La funzione hash è stata realizzata tenendo conto di due fattori determinanti per una buona distribuzione delle chiavi nella tabella hash:
+ -la dimensione della tabella hash;
+ -le possibili ricorrenze delle ultime cifre delle chiavi, che essendo indirizzi di memoria sono quasi sempre multipli di 4;
+
+Per risolvere le possibili variazioni della dimensione della ASHT e non potendola impostare come numero primo, il che avrebbe garantito una buona distribuzione anche con indirizzi di memoria come chiavi, è stato utilizzato un algoritmo in grado di garantire buoni risultati con qualsiasi valore di ASHDSIZE. 
+Per ovviare al problema delle ricorrenze è stato usato un sistema di mixing dei bit della chiave in modo da ottenere, anche con chiavi molto simili in input, risultati molto diversi in output.
+
+
+INSERIMENTO E RIMOZIONE NELLE STRUTTURE DATI
+Ogni semaforo che deve essere aggiunto in una lista di trabocco della ASHT viene inserito in testa. Questo perchè non essendo necessario un ordinamento particolare dei semafori nelle liste, l'inserimento in testa risulta la scelta più efficiente.
+Per lo stesso motivo la lista dei semd liberi è realizzata come una pila. Sia l'inserimento(con la funzione ausiliaria "insertInSemdFree") che la rimozione(funzione "removeFromSemdFree") di un elemento dalla lista vengono effettuati in testa.
+
+La coda dei pcb_t bloccati su un semaforo è una coda di priorità. L'inserimento in coda è stato quindi realizzato tramite la funzione "insertProcQ", per la gestione di code di priorità di pcb_t.
+
+INIT LISTA SEMD LIBERI
+La funzione di inizializzazione della lista dei semd liberi, "initASL", esamina l'intera "semdTable" collegando ogni elemento dell'array al successivo modificando il campo s_next. In ogni semd già precedentemente allocato nell'array viene quindi aggiunto il puntatore al successore, creando la lista dei semd liberi. Così facendo non vengono allocati ulteriori semd oltre a quelli della semdTable.
