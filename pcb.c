@@ -172,11 +172,11 @@ void insertSib(pcb_t *p, pcb_t *sib) {
 */
 void insertChild(pcb_t *parent, pcb_t *p) {
   pcb_t *fc = parent->p_first_child;
-  if(fc == NULL) parent->p_first_child = p;
-  else if(fc->p_sib == NULL) {
+  if(fc == NULL) parent->p_first_child = p; //primo figlio
+  else if(fc->p_sib == NULL) { //secondo figlio
     fc->p_sib = p;
     p->p_parent = parent;
-  } else insertSib(fc->p_sib, p);
+  } else insertSib(fc->p_sib, p); //p ultimo figlio
 }
 /**
 * Rimuove il primo figlio del PCB puntato da p. Se
@@ -219,11 +219,11 @@ pcb_t *removeSib(pcb_t *p, pcb_t *sib) {
 * differenza della removeChild, p può trovarsi in una posizione
 * arbitraria (ossia non è necessariamente il primo figlio del padre)
 *
-* @return pcb_t *
+* @return pcb_t * p, 
 */
 pcb_t *outChild(pcb_t *p) {
-  pcb_t *parent = p->p_parent;	//p non ha padre
-  if(parent == NULL) return NULL;
+  pcb_t *parent = p->p_parent;
+  if(parent == NULL) return NULL; //p non ha padre
   else if(p == parent->p_first_child)	//p è primo figlio
   return removeChild(parent);
   else return removeSib(p, parent->p_first_child); //p è un fratello
