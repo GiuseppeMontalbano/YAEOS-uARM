@@ -1,17 +1,5 @@
 #include "pcb.h"
-
-
-typedef struct semd_t {
-	struct semd_t *s_next;
-	int *s_key;
-	struct pcb_t *s_procQ;
-} semd_t;
-
-
-semd_t semd_table[MAXSEMD];
-semd_t *semdFree_h;
-semd_t *semdhash[ASHDSIZE];
-
+#include "asl.h"
 
 
 int hashFun(int *key) {
