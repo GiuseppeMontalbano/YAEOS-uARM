@@ -28,12 +28,7 @@ int hashFun(int *key) {
 }
 
 
-/*	-- cercaInListaDiTrabocco(semd_t *head, int *key) --
-	
-	Cerca il semd_t con identificativo key nella lista puntata da head.
-	Ritorna il puntatore a tale semd_t se viene trovato nella lista.
-	Ritorna NULL altrimenti.
-*/
+/* Return semd_t con chiave key nella lista puntata da head */
 semd_t *cercaInListaDiTrabocco(semd_t *head, int *key) {
     if(head==NULL)
       	return NULL;
@@ -46,10 +41,7 @@ semd_t *cercaInListaDiTrabocco(semd_t *head, int *key) {
 }
 
 
-/*	-- insertInListaDiTrabocco(semd_t *sem, int *i) --
-	
-	Inserisce sem in testa alla lista di indice i nella semdhash.
-*/
+
 void insertInListaDiTrabocco(semd_t *sem, int *i){
 	if(sem != NULL){
 		if(semdhash[*i] == NULL){
@@ -63,19 +55,15 @@ void insertInListaDiTrabocco(semd_t *sem, int *i){
 }
 
 
-/*	-- initASL_recursive(int *i) --
-	
-	Inizializza la lista dei semd_t liberi scorrendo la semd_table.
-	L'intero i serve a scorrere l'intera semd_table senza uscire dalla sua dimensione MAXSEMD.
-*/
+
 void initASL_recursive(int *i){
 	if((*i) < MAXSEMD - 1){
-		if((*i)== 0) {
-			semdFree_h = &semd_table[*i];
+		if((*i)== 0) {		
+			semdFree_h = &semd_table[*i];					/* Collegamento semdFree_h al primo elemento array */
 			semd_table[*i].s_next = &semd_table[(*i) + 1];	
 		}
 		else {
-			semd_table[*i].s_next = &semd_table[(*i) + 1]; 	
+			semd_table[*i].s_next = &semd_table[(*i) + 1];	/* Collegamento elemento array al successivo con modifica campo s_next */ 	
 		}
 		(*i) = (*i) + 1;
 		initASL_recursive(i);
@@ -83,28 +71,20 @@ void initASL_recursive(int *i){
 }
 
 
-/*	-- insertInSemdFree(semd_t *sem) --
-	
-	Inserisce il semd_t puntato da sem nella lista puntata da semdFree_h (inserimento in testa).
-*/
+
 void insertInSemdFree(semd_t *sem){
 	if(sem != NULL){
-		if(semdFree_h == NULL){
+		if(semdFree_h == NULL){			/* Caso lista semd liberi vuota */
 			semdFree_h = sem;
 		}
-		else {
-			sem->s_next = semdFree_h;
+		else {						
+			sem->s_next = semdFree_h;	/* Inserimento in testa */
 			semdFree_h = sem;
 		}
 	}
 }
 
-
-/*	-- removeFromSemdFree() --
-
-	Rimuove e ritorna la testa della lista dei semd liberi.
-	Se la lista è vuota ritorna NULL.
-*/
+/* Return semd_t rimosso dalla lista puntata da semdFree_h */
 semd_t *removeFromSemdFree(){
 	if(semdFree_h != NULL){ 	/* Se la lista dei semd liberi non è vuota usa il semd in testa */
 			semd_t *tmp;		/* Puntatore al semd rimosso dalla lista dei semd liberi */
@@ -117,25 +97,20 @@ semd_t *removeFromSemdFree(){
 }
 
 
-/* 	-- removeDaTrabocco(semd_t **head, semd_t *sem) --
-	
-	Rimuove il semd_t puntato da sem dalla lista con testa head.
-	Ritorna NULL se la testa non punta a nessuna lista o se sem non è presente nella lista.
-	Ritorna sem se è stato trovato e rimosso dalla lista.
-*/
+/* Return semd_t sem rimosso dalla lista puntata da head */
 semd_t *removeDaTrabocco(semd_t **head, semd_t *sem){
-	if((*head)== NULL){
+	if((*head)== NULL){			/* Lista vuota o sem non trovato */
 		return NULL;
 	}
 
-	else if((*head) == sem){
+	else if((*head) == sem){	/* Sem trovato */
 		(*head)=(*head)->s_next;
 		sem->s_next = NULL;
 		return sem;
 	}
 
-	else{
-		semd_t **tmp;
+	else{						/* Ricorsione */
+		semd_t **tmp;			/* Puntatore utilizzato per scorrere la coda. *tmp punta sempre all'elemento successivo di *head. Nel caso in cui *tmp è proprio l'elemento da eliminare allore *tmp punta ad *head->next->next */
 		semd_t *tmp1;
 		tmp = &tmp1;
 		tmp1 = (*head)->s_next;
@@ -151,19 +126,7 @@ semd_t *removeDaTrabocco(semd_t **head, semd_t *sem){
 } 
 
 
-/*    FUNZIONI PHASE 1    */
 
-
-/*	-- insertBlocked(int *key, pcb_t *p) --
-	
-	Viene inserito il PCB puntato da  p nella coda
-	dei processi  bloccati  associata  al semaforo con chiave  key.
-	Se il semaforo corrispondente non è  presente nella ASHT,
- 	alloca un nuovo SEMD dalla lista di quelli liberi e lo inserisce
-	nella  ASHT, settando i campi in maniera opportuna. Se non
-	è possibile allocare un nuovo SEMD perché la  lista  di quelli
-	liberi e’ vuota, restituisce -1. In  tutti  gli altri  casi,  restituisce 0.
-*/
 int insertBlocked(int *key, pcb_t *p){
 	semd_t *trovato; 	/* Puntatore al semd con chiave key se trovato, NULL altrimenti */
 	trovato = cercaInListaDiTrabocco(semdhash[hashFun(key)], key);
@@ -194,12 +157,7 @@ int insertBlocked(int *key, pcb_t *p){
 }
 
 
-/*	-- headBlocked(int *key) --
-	
-	Restituisce il puntatore al pcb del primo
-	processo bloccato sul semaforo, senza deaccordarlo. Se il
-	semaforo non esiste restituisce NULL.
-*/
+
 pcb_t *headBlocked(int *key){
 	semd_t *trovato; 	/* Punta al semd con chiave key */
 	trovato = cercaInListaDiTrabocco(semdhash[hashFun(key)], key);
@@ -212,30 +170,14 @@ pcb_t *headBlocked(int *key){
 }
 
 
-/*	-- initASL() --
-	
-	Inizializza la lista dei semdFree in
-	modo da contenere tutti gli elementi della
-	semdTable. Questo metodo viene invocato una
-	volta sola durante l’inizializzazione della struttura
-	dati.
-*/
+
 void initASL(){
 	int i = 0;	/* Counter per non finire fuori dall'array */
 	initASL_recursive(&i); 
 }
 
 
-/*	-- removeBlocked(int *key) --
-	
-	Ritorna il primo PCB dalla coda dei processi
-	bloccati (s_ProcQ) associata al SEMD della ASHT con chiave key.
-	Se tale descrittore non esiste nella ASHT, restituisce NULL.
-	Altrimenti, restituisce l’elemento  rimosso. Se la coda dei processi
-	bloccati per il semaforo diventa vuota, rimuove il descrittore
-	corrispondente dalla  ASHT e lo inserisce nella coda dei
-	descrittori liberi (semdFree).
-*/
+
 pcb_t* removeBlocked(int *key){
 	semd_t *sem;	/* Puntatore al semd di chiave key nella ASHT */
 	sem = cercaInListaDiTrabocco(semdhash[hashFun(key)],key);
@@ -259,11 +201,7 @@ pcb_t* removeBlocked(int *key){
 }
 
 
-/*	-- forallBlocked(int *key, void fun(pcb_t *pcb, void *),void *arg) --
-	
-	Richiama la funzione fun per ogni processo bloccato sul semaforo
-	identificato da key.
-*/
+
 void forallBlocked(int *key, void fun(pcb_t *pcb, void *),void *arg){
 	semd_t *sem;	/* Puntatore al semd con id key nella ASHT */
 	sem = cercaInListaDiTrabocco(semdhash[hashFun(key)], key);
@@ -273,11 +211,6 @@ void forallBlocked(int *key, void fun(pcb_t *pcb, void *),void *arg){
 }
 
 
-/*	-- outChildBlocked(pcb_t *p) --
-	
-	Rimuove il PCB puntato da p dalla
-	coda del semaforo su cui è  bloccato.
-*/
 pcb_t *outChildBlocked(pcb_t *p){
 	if (p->p_semKey == NULL) return NULL;
 	
